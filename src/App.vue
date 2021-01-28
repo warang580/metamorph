@@ -1,19 +1,30 @@
 <template>
-  <template v-for="child in children">
-    <component :is="child.type" v-bind="child.attributes">
-      <!-- @TODO: get from data ? -->
-      <template v-if="child.children == '$data'">
-        {{ $data }}
-      </template>
+  <button class="border bg-red-100 p-2" @click="refresh">
+    REFRESH
+  </button>
 
-      <template v-else>
-        {{ child.children }}
-      </template>
-    </component>
-  </template>
+  <Scene />
+
 </template>
 
 <script>
+/*
+<template v-for="child in children">
+<component :is="child.type" v-bind="child.attributes">
+<!-- @TODO: get from data ? -->
+<template v-if="child.children == '$data'">
+{{ $data }}
+</template>
+
+<template v-else>
+{{ child.children }}
+</template>
+</component>
+</template>
+
+*/
+
+
 /* Modéliser BPM form / Gayagaya et ensuite abstraire ? */
 /* Modéliser tout sous forme de json pour pouvoir le gérer en dynamique later */
 /* Tout ce qui est console.loggé ou écrit dans le présent fichier doit pouvoir être fait via l'outil !!! */
@@ -25,7 +36,15 @@
 
 // lorsqu'on détecte un changement de composant, il faut qu'on réécrive le fichier correspondant côté Node pour que Vite/Vue détecte le changement et recompile le fichier ... ?
 
+const { ipcRenderer } = require('electron');
+
+import Scene from './components/Scene.vue'
+
 export default {
+  components: {
+    Scene,
+  },
+
   data() {
     return {
       // @TODO: full state ref ?
@@ -81,8 +100,12 @@ export default {
   },
 
   methods: {
-
+    refresh() {
+      ipcRenderer.send('generate', {foo: "bar"});
+    },
   },
+
+  // @TODO: remove listeners on destroy ?
 
   computed: {
   },

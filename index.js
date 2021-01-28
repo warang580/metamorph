@@ -1,11 +1,35 @@
 // Electron entrypoint
 
-const { app, BrowserWindow, Notification } = require('electron')
-// const fs = require('fs')
+const { app, ipcMain, BrowserWindow, Notification } = require('electron')
+const path = require('path')
+const fs = require('fs')
+
+let win;
+let start = Date.now();
 
 app.disableHardwareAcceleration()
 
-let win;
+function generate() {
+  let file    = "Scene.vue";
+  let content = "<template><div>SCENE " + Date.now() + "</div></template>";
+
+  fs.writeFileSync(path.join(__dirname, "src/components", file), content);
+}
+
+ipcMain.on('generate', (event, args) => {
+  console.log("electron should generate app", args);
+  win.webContents.send('info', { msg: "Generating ..."});
+
+  generate();
+});
+
+ipcMain.on('ready', (event, args) => {
+  console.log("vite is ready")
+  showNotification({
+    title: 'Ready',
+  })
+});
+
 
 function showNotification (notification) {
   new Notification(notification).show()
@@ -13,11 +37,12 @@ function showNotification (notification) {
 
 function createWindow () {
   console.log("createWindow")
-  const win = new BrowserWindow({
+  win = new BrowserWindow({
     width: 800,
     height: 600,
     webPreferences: {
-      //nodeIntegration: true
+      // @NOTE: this is needed to require('electron')
+      nodeIntegration: true
     }
   })
 
@@ -28,12 +53,6 @@ function createWindow () {
 app.whenReady()
   .then(() => console.log("app ready"))
   .then(createWindow)
-  .then(() => {
-    showNotification({
-      title: 'Electron launched',
-      body:  'You can now ... work... I guess ?'
-    })
-  })
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
