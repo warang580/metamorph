@@ -4,26 +4,17 @@
   - [x] Make a button that sends a "generate" event to back-end API
   - [x] When this event is catch by API, create file components/scene.vue
 
-  - [ ] Make a separate "yarn generate" that can generate application without having to rerun electron every time something changes in the code
+  - [x] Make a separate "yarn generate" that can generate application without having to rerun electron every time something changes in the code
+  - [x] Make scene based on an object/json containing the current "state"
+  - [x] Use yarn generate utils to refresh state inside
 
-  - [ ] Make scene based on a JSON containing the current "state"
+  - Centralize data in db.JSON
     - yarn generate uses a db.json @ root
     - inside application,
       - it uses db.json as initial state
       - it uses "current state" after (it changes if modified)
-
-    - its content is generated from an object that contains elements and childrens
-
-
-
-  - Node skeleton
-  - Generate component based on node skeleton + data
-  - remove "fake" components and make them "real"
-  - Changing a component should send a message to backend to recomping corresponding file
-
-- Current state database (localStorage ? fileSystem !)
-  - We can use node via backend !
-  - We save a fucking big json and load it when restarting the whole process
+      - it updates db.json (could be scenes/start.json etc. like HyperCards)
+      - move state inside Scene instead of (in App + with props) ?
 
 - Workflow
   - Start electron
@@ -32,6 +23,17 @@
   - Then you can work
 
   - Find a way to get yarn vite output inside metamorph (in case of errors etc.)
+  - console.log should be visible everywhere
+  - electron crashes should be backed up
+  - same for vite
+    - writing "$attrs.scene.template.0" crashed the whole thing (because it's [0])
+      - I've had to manually edit the generated file so it was correct
+      (maybe because I don't have a single source of truth)
+
+- Make intermediate component like "Inspector"
+
+- Use env variables for PORT, WINDOW_W, WINDOW_H
+- Data.get ?
 
 # Dynamic content
 

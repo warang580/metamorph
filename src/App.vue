@@ -1,10 +1,9 @@
 <template>
-  <button class="border bg-red-100 p-2" @click="refresh">
+  <button class="border bg-red-100 m-4 p-2" @click="refresh">
     REFRESH
   </button>
 
-  <Scene />
-
+  <Scene :scene="scene" />
 </template>
 
 <script>
@@ -47,51 +46,66 @@ export default {
 
   data() {
     return {
-      // @TODO: full state ref ?
-
-      // @TODO
-      // components: {
-      //   "SomeName": {/* Components attributes that will be compiled into files */}
-      // },
-
       context: {
         name: "Hello",
       },
 
-      children: [{
-        type: "div",
-        attributes: {
-          class: "bg-red-300",
+      scene: {
+        template: [{
+          tag: "div",
+          attributes: {
+            class: "rounded shadow mt-4 p-4 m-4 text-green-200 bg-green-600",
+          },
+          children: "C'est marrant ce texte à l'envers, on dirait qu'il y a eu un problème ..."
+        }, {
+          tag: "img",
+          attributes: {
+            class: "rounded shadow m-4 transform rotate-12",
+            width: 50,
+            src: "https://media1.tenor.com/images/f38bd4f0ae23b4d7d594c388ab4f09ed/tenor.gif",
+          },
+        }, {
+          tag: "textarea",
+          attributes: {
+            class: "p-4 rounded shadow resize border m-4",
+          },
+        }, {
+          tag: "div",
+          attributes: {
+            class: "bg-blue-300",
+          },
+          children: "Hello Guys! It Works!"
+        }, {
+          tag: "pre",
+          attributes: {
+            class: "bg-gray-300",
+          },
+          // THIS IS WHERE THE MAGIC HAPPENS :tada:
+          children: "data = {{ $data }}"
+        }, {
+          tag: "pre",
+          attributes: {
+            class: "bg-gray-300",
+          },
+          // THIS IS WHERE THE MAGIC HAPPENS :tada:
+          children: "classes = {{ $attrs.scene.template[0].attributes.class.split(' ') }}"
         },
-        children: "It still works with this syntax !"
-      }, {
-        type: "textarea"
-      }, {
-        type: "div",
-        attributes: {
-          class: "bg-green-300",
-        },
-        children: "I hope it does work too"
-      }, {
-        type: "img",
-        attributes: {
-          class: "rounded shadow m-4 transform rotate-12",
-          width: 50,
-          src: "https://media1.tenor.com/images/f38bd4f0ae23b4d7d594c388ab4f09ed/tenor.gif",
-        },
-      }, {
-        type: "div",
-        attributes: {
-          class: "bg-blue-300",
-        },
-        children: "Hello Guys! It Works!"
-      }, {
-        type: "pre",
-        attributes: {
-          class: "bg-gray-300",
-        },
-        children: "$data"
-      }],
+        {
+          tag: "pre",
+          attributes: {
+            class: "bg-gray-300",
+          },
+          // THIS IS WHERE THE MAGIC HAPPENS :tada:
+          children: "nb of classes = {{ $attrs.scene.template[0].attributes.class.split(' ').length }}"
+        }, {
+          tag: "pre",
+          attributes: {
+            class: "bg-red-300",
+          },
+          // THIS IS WHERE THE MAGIC HAPPENS :tada:
+          children: "props = {{ $props }}"
+        }],
+      },
     };
   },
 
@@ -101,8 +115,19 @@ export default {
 
   methods: {
     refresh() {
-      ipcRenderer.send('generate', {foo: "bar"});
+      ipcRenderer.send('generate', { scene: JSON.stringify(this.scene) });
     },
+  },
+
+  watch: {
+    scene: {
+      deep: true,
+      // @NOTE: don't do immediatly otherwise it will refresh indefinitely
+      immediate: false,
+      handler: () => {
+        this.refresh();
+      }
+    }
   },
 
   // @TODO: remove listeners on destroy ?

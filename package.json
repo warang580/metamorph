@@ -5,6 +5,7 @@
   "license": "MIT",
   "main": "index.js",
   "scripts": {
+    "generate": "babel-node generate.js",
     "electron": "electron .",
     "vite": "vite",
     "build": "vite build"
@@ -14,12 +15,14 @@
     "xstate": "^4.16.0"
   },
   "devDependencies": {
+    "@babel/core": "^7.12.10",
+    "@babel/node": "^7.12.10",
     "@vitejs/plugin-vue": "^1.0.4",
     "@vue/compiler-sfc": "^3.0.5",
     "autoprefixer": "^10.2.1",
+    "electron": "^11.2.0",
     "postcss": "^8.2.4",
     "tailwindcss": "^2.0.2",
-    "electron": "^11.2.0",
     "vite": "^2.0.0-beta.12"
   }
 }
