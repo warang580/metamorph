@@ -6,7 +6,7 @@
   "main": "index.js",
   "scripts": {
     "generate": "babel-node generate.js",
-    "electron": "electron .",
+    "electron": "yarn generate && electron .",
     "vite": "vite",
     "build": "vite build"
   },
