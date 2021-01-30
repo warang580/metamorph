@@ -94,19 +94,29 @@ const renderComponent = function (scene) {
 }
 
 const writeComponent = function (name, content) {
-  let file = `${name}.vue`;
+  return writeFile('src/components', `${name}.vue`, content);
+}
 
-  console.log("writeComponent", file, content.length);
+const renderSave = function (scene) {
+  return "module.exports = " + JSON.stringify(scene, null, 2) + ";"
+}
 
-  fs.writeFileSync(path.join(
-    process.cwd(), "src/components", file
-  ), content);
+const saveComponent = function (name, content) {
+  return writeFile('src/saves', `${name}.js`, content);
+}
+
+const writeFile = function (dir, file, content) {
+  console.log("writeFile", file, content.length);
+
+  return fs.writeFileSync(path.join(process.cwd(), dir, file), content);
 }
 
 module.exports = {
   renderAttributes,
   renderElements,
   renderComponent,
-
   writeComponent,
+
+  renderSave,
+  saveComponent,
 }

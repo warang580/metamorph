@@ -4,7 +4,7 @@ const { app, ipcMain, BrowserWindow, Notification } = require('electron')
 const path = require('path')
 const fs = require('fs')
 
-const { renderComponent, writeComponent } = require('./src/utils/generator.js');
+const { renderComponent, writeComponent, renderSave, saveComponent } = require('./src/utils/generator.js');
 
 let win;
 let start = Date.now();
@@ -15,9 +15,13 @@ ipcMain.on('generate', (event, args) => {
   console.log("Generating", args.name);
 
   // @NOTE: JSON.parse because we can't clone "Proxy" objects (data fields of vue component) so we stringify them before sending
-  let scene = JSON.parse(args.component);
-  
-  writeComponent(args.name, renderComponent(scene));
+  try {
+    let scene = JSON.parse(args.component);
+    writeComponent(args.name, renderComponent(scene));
+    saveComponent(args.name,  renderSave(scene));
+  } catch (err) {
+    console.log("Can't parse component", err, args);
+  }
 });
 
 // @NOTE: this happens on start AND when saves/... changes

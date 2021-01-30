@@ -7,16 +7,18 @@
       - [x] So we need to inject $component inside scene data() {}
     - trigger changes by calling $component.save ?
       - [x] hard-coded version
-  - [ ] Saving changes in DB
-  - check invalid JSON before trying to apply/save changes (electron-side)
+  - [x] Saving changes in DB
+  - [x] check invalid JSON before trying to apply/save changes (electron-side)
+  - [ ] dynamic version of updating component instead of hardcoded
 
 - Workflow
   - Start electron
   - It generates all components
   - It starts Vite in the background
   - Then you can work
-
-  - Make a state machine out of electron start, it's confusing right now
+  - Killing electron stops vite too
+  - Make Vite & Electron speak to each other
+  (- Make a state machine out of electron start, it's confusing right now)
 
   - Find a way to get yarn vite output inside metamorph (in case of errors etc.)
     maybe send them to the scene ? or root ? so they can be used
@@ -47,3 +49,8 @@ it can be done "by writing code manually" at the beginning to watch for patterns
   $data.context.x ?
 - dynamic data in children
 - update context/state with machine actions ?
+
+# Refactor / Optimisations
+
+- I don't like generator.js API
+  - Only one function (with side effets) to render component/save, no composition needed [at least outside]
