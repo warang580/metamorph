@@ -9,20 +9,27 @@ module.exports = {
   }, {
     tag: "textarea",
     attributes: {
-      class: "p-4 rounded shadow resize border m-4",
+      class: "w-1/2 h-screen p-4 rounded shadow resize border m-4 text-monospace",
+      "v-model": "scene",
     },
+  }, {
+    tag: "button",
+    attributes: {
+      class: "border animate-pulse bg-gray-300 m-4 p-2",
+      "@click": "update",
+    },
+    children: "Redraw",
   }, {
     tag: "pre",
     attributes: {
       class: "bg-red-200",
     },
-    // THIS IS WHERE THE MAGIC HAPPENS :tada:
-    children: "attrs = {{ $attrs }}"
+    children: "$data = {{ $data }}"
+  }, {
+    tag: "pre",
+    attributes: {
+      class: "bg-green-200",
+    },
+    children: "_component = {{ $data._component }}"
   }],
-
-  // first step = edit scene html inside scene itself
-
-  // state ?
-  // computed ?
-  // methods ? states machines ?
 }

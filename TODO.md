@@ -2,11 +2,13 @@
 
 - Save/load changes without thinking
   - [x] Loading
-  - [ ] We need to be able to edit components/state
+  - [x] We need to be able to edit components/state
     - like v-model="$component.template"
-      - So we need to inject $component
+      - [x] So we need to inject $component inside scene data() {}
     - trigger changes by calling $component.save ?
+      - [x] hard-coded version
   - [ ] Saving changes in DB
+  - check invalid JSON before trying to apply/save changes (electron-side)
 
 - Workflow
   - Start electron

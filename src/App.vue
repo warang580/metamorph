@@ -21,10 +21,6 @@ export default {
 
   data() {
     return {
-      context: {
-        name: "Hello",
-      },
-
       scene: scene,
     };
   },

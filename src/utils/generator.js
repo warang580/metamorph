@@ -1,3 +1,6 @@
+const path = require('path');
+const fs   = require('fs');
+
 const renderAttributes = function (attrs) {
   let attributes = [];
 
@@ -9,10 +12,11 @@ const renderAttributes = function (attrs) {
 }
 
 const renderElements = function (elements) {
-  let output = "";
 
   if (typeof elements == "undefined") return "";
-  if (typeof elements == "string") return elements;
+  if (typeof elements == "string")    return elements;
+
+  let output = [];
 
   for (let element of elements) {
     let tag        = element.tag || "template";
@@ -21,22 +25,72 @@ const renderElements = function (elements) {
 
     let childrenOutput = renderElements(children);
 
+    let markup = "";
     if (childrenOutput) {
-      output += `<${tag} ${renderAttributes(attributes)}>`;
-      output += childrenOutput;
-      output += `</${tag}>` + "\n";
+      markup += `<${tag} ${renderAttributes(attributes)}>`;
+      markup += childrenOutput;
+      markup += `</${tag}>`;
     } else {
-      output += `<${tag} ${renderAttributes(attributes)} />` + "\n";
+      markup += `<${tag} ${renderAttributes(attributes)} />`;
     }
+
+    output.push(markup);
   }
 
-  return output;
+  return output.join("\n");
 }
 
-const renderScene = function (scene) {
-  let content = renderElements(scene.template);
+const renderTemplate = function (scene) {
+  return renderElements(scene.template);
+}
 
-  return "<template>\n" + content + "</template>\n";
+const renderScript = function (scene) {
+  let output = [
+    "const { ipcRenderer } = require('electron');",
+    "",
+    "export default {",
+      "data() {",
+        "return {",
+          "_component: " + JSON.stringify(scene, null, 2) + ",",
+          "scene: '',",
+        "};",
+      "},",
+      "",
+      "mounted() {",
+        "console.log('$data', this.$data);",
+        "console.log('_component', this.$data._component);",
+        "this.scene = JSON.stringify(this.$data._component, null, 2);",
+      "},",
+      "",
+      "methods: {",
+        "update(evt) {",
+          "console.log('updating ...', this.scene, evt);",
+          "this._compile(this.scene);",
+        "},",
+        "",
+        "_compile(component) {",
+          "console.log('compiling ...', component);",
+          "ipcRenderer.send('generate', {name: 'Scene', component: component });",
+        "},",
+      "},",
+    "}",
+  ];
+
+  return output.join("\n");
+}
+
+const renderComponent = function (scene) {
+  let component = [
+    "<template>",
+    renderTemplate(scene),
+    "</template>",
+    "",
+    "<script>",
+    renderScript(scene),
+    "</script>",
+  ];
+
+  return component.join("\n");
 }
 
 const writeComponent = function (name, content) {
@@ -45,14 +99,14 @@ const writeComponent = function (name, content) {
   console.log("writeComponent", file, content.length);
 
   fs.writeFileSync(path.join(
-    __dirname, "src/components", file
+    process.cwd(), "src/components", file
   ), content);
 }
 
 module.exports = {
   renderAttributes,
   renderElements,
-  renderScene,
-  
+  renderComponent,
+
   writeComponent,
 }
