@@ -16,8 +16,7 @@ ipcMain.on('generate', (event, args) => {
 
   // @NOTE: JSON.parse because we can't clone "Proxy" objects (data fields of vue component) so we stringify them before sending
   let scene = JSON.parse(args.component);
-
-  // @TODO: we only handle scene for now
+  
   writeComponent(args.name, renderScene(scene));
 });
 

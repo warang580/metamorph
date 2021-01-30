@@ -1,31 +1,24 @@
 # POC
 
-- Dynamic components
-  - [x] Make a button that sends a "generate" event to back-end API
-  - [x] When this event is catch by API, create file components/scene.vue
-
-  - [x] Make a separate "yarn generate" that can generate application without having to rerun electron every time something changes in the code
-  - [x] Make scene based on an object/json containing the current "state"
-  - [x] Use yarn generate utils to refresh state inside
-
-  - Centralize data in DB
-    - [x] refactor code so its uses a db json file
-    - [x] yarn generate uses a DB
-    - inside application,
-      - [x] it uses DB as initial state
-      - it uses "current state" after (it changes if modified)
-        - to do that I need something to edit state lol
-      - it updates db.json (could be scenes/start.json etc. like HyperCards)
-      - move state inside Scene instead of (in App + with props) ?
+- Save/load changes without thinking
+  - [x] Loading
+  - [ ] We need to be able to edit components/state
+    - like v-model="$component.template"
+      - So we need to inject $component
+    - trigger changes by calling $component.save ?
+  - [ ] Saving changes in DB
 
 - Workflow
-  - Make a state machine out of electron start, it's confusing right now
   - Start electron
   - It generates all components
   - It starts Vite in the background
   - Then you can work
 
+  - Make a state machine out of electron start, it's confusing right now
+
   - Find a way to get yarn vite output inside metamorph (in case of errors etc.)
+    maybe send them to the scene ? or root ? so they can be used
+    // @TODO: gérer un <Root> qui gère <Scene> + ses data ? c'est déjà un peu le rôle de App.vue
   - console.log should be visible everywhere
   - electron crashes should be backed up
   - same for vite
@@ -34,9 +27,12 @@
       (maybe because I don't have a single source of truth)
 
 - Make intermediate component like "Inspector"
+  // Gérer les dépendences entre fichiers si <A> demande <B>
 
 - Use env variables for PORT, WINDOW_W, WINDOW_H
 - Data.get ?
+
+/* Tout ce qui est console.loggé ou archéologisé doit être visible ! */
 
 # Dynamic content
 

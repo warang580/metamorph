@@ -7,11 +7,6 @@
 </template>
 
 <script>
-/* Modéliser BPM form / Gayagaya et ensuite abstraire ? */
-/* Tout ce qui est console.loggé ou écrit dans le présent fichier doit pouvoir être fait via l'outil !!! */
-// Gérer les dépendences entre fichiers si <A> demande <B>
-// @TODO: gérer un <Root> qui gère <Scene> + ses data ? c'est déjà un peu le rôle de App.vue
-
 const { ipcRenderer } = require('electron');
 
 // @NOTE: process.cwd() == "metamorph/" not "src/"
