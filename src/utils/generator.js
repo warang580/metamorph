@@ -39,8 +39,20 @@ const renderScene = function (scene) {
   return "<template>\n" + content + "</template>\n";
 }
 
+const writeComponent = function (name, content) {
+  let file = `${name}.vue`;
+
+  console.log("writeComponent", file, content.length);
+
+  fs.writeFileSync(path.join(
+    __dirname, "src/components", file
+  ), content);
+}
+
 module.exports = {
   renderAttributes,
   renderElements,
   renderScene,
+  
+  writeComponent,
 }

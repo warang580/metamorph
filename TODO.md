@@ -8,15 +8,18 @@
   - [x] Make scene based on an object/json containing the current "state"
   - [x] Use yarn generate utils to refresh state inside
 
-  - Centralize data in db.JSON
-    - yarn generate uses a db.json @ root
+  - Centralize data in DB
+    - [x] refactor code so its uses a db json file
+    - [x] yarn generate uses a DB
     - inside application,
-      - it uses db.json as initial state
+      - [x] it uses DB as initial state
       - it uses "current state" after (it changes if modified)
+        - to do that I need something to edit state lol
       - it updates db.json (could be scenes/start.json etc. like HyperCards)
       - move state inside Scene instead of (in App + with props) ?
 
 - Workflow
+  - Make a state machine out of electron start, it's confusing right now
   - Start electron
   - It generates all components
   - It starts Vite in the background

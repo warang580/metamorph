@@ -4,33 +4,27 @@ const { app, ipcMain, BrowserWindow, Notification } = require('electron')
 const path = require('path')
 const fs = require('fs')
 
-const { renderScene } = require('./src/utils/generator.js');
+const { renderScene, writeComponent } = require('./src/utils/generator.js');
 
 let win;
 let start = Date.now();
 
 app.disableHardwareAcceleration()
 
-function generate(scene) {
-  let file    = "Scene.vue";
-  let content = renderScene(scene);
-
-  fs.writeFileSync(path.join(__dirname, "src/components", file), content);
-}
-
 ipcMain.on('generate', (event, args) => {
-  console.log("Generating ...");
-  win.webContents.send('info', { msg: "Generating ..."});
+  console.log("Generating", args.name);
 
   // @NOTE: JSON.parse because we can't clone "Proxy" objects (data fields of vue component) so we stringify them before sending
-  generate(JSON.parse(args.scene));
+  let scene = JSON.parse(args.component);
+
+  // @TODO: we only handle scene for now
+  writeComponent(args.name, renderScene(scene));
 });
 
+// @NOTE: this happens on start AND when saves/... changes
 ipcMain.on('ready', (event, args) => {
-  console.log("Vite is ready")
-  showNotification({
-    title: 'Ready',
-  })
+  console.log("ipcMain @ready")
+  win.webContents.send('ready');
 });
 
 
@@ -39,7 +33,6 @@ function showNotification (notification) {
 }
 
 function createWindow () {
-  console.log("createWindow")
   win = new BrowserWindow({
     width: 800,
     height: 600,
@@ -52,13 +45,11 @@ function createWindow () {
   // @TEMP: disable menu bar as we don't use it yet
   win.setMenuBarVisibility(false);
 
+  // Visit Vite dev environment
   win.loadURL('http://localhost:3000/')
-  // win.loadFile('index.html')
 }
 
-app.whenReady()
-  .then(() => console.log("app ready"))
-  .then(createWindow)
+app.whenReady().then(createWindow)
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
@@ -66,9 +57,9 @@ app.on('window-all-closed', () => {
   }
 })
 
-app.on('activate', () => {
-  console.log("activate");
-  if (BrowserWindow.getAllWindows().length === 0) {
-    createWindow()
-  }
-})
+// @NOTE: this is from electron site but was never useful ?
+// app.on('activate', () => {
+//   if (BrowserWindow.getAllWindows().length === 0) {
+//     createWindow()
+//   }
+// })
