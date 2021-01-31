@@ -18,6 +18,11 @@
     - le système l'ajoute aux systèmes et voit qu'il n'existe pas donc créé un fichier "vierge" de component qui contient juste un name I guess, et là tu peux rajotuer des choses là dedans pour afficher des trucs :parfait:
       - bon il faut probablement juste un template avec just eun élement genre [MyComponent] pour savoir où il est ... bon en fait faut aussi l'inspector pour pouvoir l'éditer direct ... à moins de pouvoir dire <Inspector for="MyComponent"> et on peut le faire sans être dedans !
 
+  - lorsque le state a changé et que j'envoie une nouvelle version de component, je m'attends à ce que le state continu d'exister, et non pas qu'il soit effacé
+    - à mon avis ça doit être configurable dans l'event passé au BACKEND
+      (parce qu'en cas d'utilisation réelle, je veux pas forcément qu'il me garde tout mon nouveau state comme étant le state par défaut ... à moins que ... je sais pas encore)
+      - faut ptêtre juste appeller "state" -> "initialState" un truc comme ça pour qu'on comprenne que c'est l'état initial du widget qu'on gère là-dedans
+      - du coup on pourrait stocker initialState + currentState (currentState dans le localStorage maybe pour pas polluer la définition de fichier de save) en même temps comme ça tu perds rien
 - Workflow
   - Start electron
   - It generates all components

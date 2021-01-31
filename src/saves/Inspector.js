@@ -16,7 +16,10 @@ module.exports = {
   "template": [
     {
       "tag": "span",
-      "children": "INSPECTOR ! :smart:"
+      "attributes": {
+        "class": "text-xl font-bold"
+      },
+      "children": "Inspector"
     },
     {
       "tag": "input",
@@ -49,7 +52,7 @@ module.exports = {
         {
           "tag": "textarea",
           "attributes": {
-            "class": "block w-screen p-4 overflow-auto transform rotate-0 rounded shadow resize border m-4 font-mono",
+            "class": "block w-1/2 p-4 overflow-auto transform rotate-0 rounded shadow resize border m-4 text-xs font-mono",
             "v-model": "scene",
             "v-if": "editable",
             "style": "height: 400px"
@@ -69,9 +72,10 @@ module.exports = {
     {
       "tag": "pre",
       "attributes": {
-        "class": "bg-red-200"
+        "class": "bg-red-200 text-xs font-mono",
+        "v-if": "false && ! editable"
       },
-      "children": "Number of children = {{ $data._component.template.length }}"
+      "children": "{{ $data._component.template }}"
     }
   ]
 };

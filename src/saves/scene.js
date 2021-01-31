@@ -49,7 +49,7 @@ module.exports = {
         {
           "tag": "textarea",
           "attributes": {
-            "class": "block w-screen p-4 overflow-auto transform rotate-0 rounded shadow resize border m-4 font-mono",
+            "class": "block w-1/2 p-4 overflow-auto transform rotate-0 rounded shadow resize border m-4 font-mono text-xs",
             "v-model": "scene",
             "v-if": "editable",
             "style": "height: 400px"
@@ -75,8 +75,12 @@ module.exports = {
       }
     },
     {
-      "tag": "pre",
-      "children": "src = {{ wave }}"
+      "tag": "input",
+      "attributes": {
+        "type": "text",
+        "class": "border p-4 w-1/2 block",
+        "v-model": "wave"
+      }
     },
     {
       "tag": "Inspector"
