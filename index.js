@@ -18,22 +18,19 @@ ipcMain.on('generate', (event, args) => {
   try {
     let scene = JSON.parse(args.component);
     writeComponent(args.name, renderComponent(scene));
-    saveComponent(args.name,  renderSave(scene));
+    saveComponent (args.name, renderSave(scene));
+    saveComponent (args.name, renderSave(scene));
   } catch (err) {
     console.log("Can't parse component", err, args);
   }
 });
 
-// @NOTE: this happens on start AND when saves/... changes
-ipcMain.on('ready', (event, args) => {
-  console.log("ipcMain @ready")
-  win.webContents.send('ready');
+// @NOTE: this event happens when main.js is runned again (page reloads)
+ipcMain.on('reload', (event, args) => {
+  console.log("[vite] page reload");
+  // win.webContents.send('ready');
 });
 
-
-function showNotification (notification) {
-  new Notification(notification).show()
-}
 
 function createWindow () {
   win = new BrowserWindow({
@@ -52,13 +49,22 @@ function createWindow () {
   win.loadURL('http://localhost:3000/')
 }
 
-app.whenReady().then(createWindow)
+app.whenReady(() => {
+  console.log("[app] ready");
+}).then(createWindow)
 
 app.on('window-all-closed', () => {
+  console.log("[app] window-all-closed");
+
   if (process.platform !== 'darwin') {
     app.quit()
   }
 })
+
+// @NOTE: send native notifications
+// function showNotification(notification) {
+//   new Notification(notification).show()
+// }
 
 // @NOTE: this is from electron site but was never useful ?
 // app.on('activate', () => {

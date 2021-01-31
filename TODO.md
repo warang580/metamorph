@@ -9,7 +9,12 @@
       - [x] hard-coded version
   - [x] Saving changes in DB
   - [x] check invalid JSON before trying to apply/save changes (electron-side)
-  - [ ] dynamic version of updating component instead of hardcoded
+  - [x] dynamic version of updating component instead of hardcoded
+  - [ ] dynamic components (not just Scene)
+    - Inspector
+    - Editor
+
+- need props
 
 - Workflow
   - Start electron
@@ -38,7 +43,17 @@
 
 /* Tout ce qui est console.loggé ou archéologisé doit être visible ! */
 
+# Testing
+
+TDD generator
+  - sérialisation des fonctions (dans les deux sens)
+    - scene.js contiendra une version texte?
+    - il mettra la version executable dans vue
+    - au moment de sérialiser, ce sera de nouveau du texte et sauvegardé comme tel?
+
 # Dynamic content
+
+- SceneManager qui décide quelle scène afficher ?
 
 maybe start simple/concrete, not abstract
 it can be done "by writing code manually" at the beginning to watch for patterns

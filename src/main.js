@@ -9,4 +9,4 @@ ipcRenderer.on('info', (evt, args) => {
   console.log("[metamorph] " + args.msg);
 });
 
-ipcRenderer.send('ready');
+ipcRenderer.send('reload');

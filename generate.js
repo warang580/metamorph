@@ -2,8 +2,16 @@
 
 const { renderComponent, writeComponent } = require('./src/utils/generator.js');
 
-console.log("# Generating Scene");
-let scene = require('./src/saves/scene.js');
+console.log("# Generating files");
 
-console.log("# Writing files");
-writeComponent("Scene", renderComponent(scene));
+let components = [
+  'Scene',
+  'Inspector',
+];
+
+for (let component of components) {
+  writeComponent(
+    component,
+    renderComponent(require(`./src/saves/${component}.js`))
+  );
+}

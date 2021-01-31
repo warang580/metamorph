@@ -1,23 +1,24 @@
 module.exports = {
-  "name": "Scene",
+  "name": "Inspector",
   "data": {
     "editable": true,
     "scene": "",
     "wave": "https://media1.tenor.com/images/f38bd4f0ae23b4d7d594c388ab4f09ed/tenor.gif",
     "w": 100
   },
-  "components": [
-    "Inspector"
-  ],
   "mounted": "() => {\n\nthis.scene = JSON.stringify(this.$data._component, null, 4);\n  }",
   "methods": {
     "update": "() => {\n\nthis._compile(this.scene);\n  }",
-    "_compile": "(component) => {\nconsole.log('compiling ...'); \nipcRenderer.send('generate', {name: 'Scene', component: component });\n}"
+    "_compile": "(component) => {\nconsole.log('compiling ...'); \nipcRenderer.send('generate', {name: 'Inspector', component: component });\n}"
   },
   "computed": {
     "context": "() => {\nlet context = Object.assign({}, this.$data);\ndelete context._component;\nreturn context;\n  }"
   },
   "template": [
+    {
+      "tag": "span",
+      "children": "INSPECTOR !"
+    },
     {
       "tag": "input",
       "attributes": {
@@ -67,6 +68,13 @@ module.exports = {
       ]
     },
     {
+      "tag": "pre",
+      "attributes": {
+        "class": "bg-red-200"
+      },
+      "children": "Number of children = {{ $data._component.template.length }}"
+    },
+    {
       "tag": "img",
       "attributes": {
         "class": "rounded shadow m-4 transform animate-bounce rotate-12",
@@ -77,9 +85,6 @@ module.exports = {
     {
       "tag": "pre",
       "children": "src = {{ wave }}"
-    },
-    {
-      "tag": "Inspector"
     }
   ]
 };

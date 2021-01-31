@@ -19,9 +19,9 @@ const renderElements = function (elements) {
   let output = [];
 
   for (let element of elements) {
-    let tag        = element.tag || "template";
+    let tag        = element.tag        || "template";
     let attributes = element.attributes || {};
-    let children   = element.children || [];
+    let children   = element.children   || [];
 
     let childrenOutput = renderElements(children);
 
@@ -40,38 +40,82 @@ const renderElements = function (elements) {
   return output.join("\n");
 }
 
-const renderTemplate = function (scene) {
-  return renderElements(scene.template);
+const renderTemplate = function (component) {
+  return renderElements(component.template);
 }
 
-const renderScript = function (scene) {
+const renderData = function (component) {
+  let data = component.data || {};
+  return Object.entries(data).map(([k,v]) => {
+    return `${k}: ` + JSON.stringify(v);
+  });
+}
+
+const renderMounted = function (component) {
+  let fn = component.mounted ? component.mounted : () => {};
+
+  return "(" + String(fn) + ")();";
+}
+
+const renderMethods = function (component) {
+  let methods = component.methods || {};
+
+  return Object.entries(methods).map(([k, v]) => {
+    return `${k}(...args) { return (` + String(v) + ")(...args); }";
+  });
+}
+
+const renderComputed = function (component) {
+  let methods = component.computed || {};
+
+  return Object.entries(methods).map(([k, v]) => {
+    return `${k}() { return (` + String(v) + ")(); }";
+  });
+}
+
+const renderImports = function (component) {
+  let components = component.components || [];
+
+  return components.map(c => {
+    return `import ${c} from './${c}.vue'`;
+  }).join("\n");
+}
+
+const renderComponents = function (component) {
+  let components = component.components || [];
+
+  return components.map(c => {
+    return `${c}: ${c},`;
+  }).join("\n");
+}
+
+const renderScript = function (component) {
   let output = [
     "const { ipcRenderer } = require('electron');",
     "",
+    renderImports(component),
+    "",
     "export default {",
+      "components: {" + renderComponents(component) + "},",
+      "",
       "data() {",
         "return {",
-          "_component: " + JSON.stringify(scene, null, 2) + ",",
-          "scene: '',",
+          "_component: " + JSON.stringify(component/*, null, 2*/) + ",",
+          renderData(component).join(",\n"),
         "};",
       "},",
       "",
+      // TODO: all functions can be refactored
       "mounted() {",
-        "console.log('$data', this.$data);",
-        "console.log('_component', this.$data._component);",
-        "this.scene = JSON.stringify(this.$data._component, null, 2);",
+        renderMounted(component),
       "},",
       "",
       "methods: {",
-        "update(evt) {",
-          "console.log('updating ...', this.scene, evt);",
-          "this._compile(this.scene);",
-        "},",
-        "",
-        "_compile(component) {",
-          "console.log('compiling ...', component);",
-          "ipcRenderer.send('generate', {name: 'Scene', component: component });",
-        "},",
+        renderMethods(component).join(",\n"),
+      "},",
+      "",
+      "computed: {",
+        renderComputed(component).join(",\n"),
       "},",
     "}",
   ];
@@ -79,18 +123,16 @@ const renderScript = function (scene) {
   return output.join("\n");
 }
 
-const renderComponent = function (scene) {
-  let component = [
+const renderComponent = function (component) {
+  return [
     "<template>",
-    renderTemplate(scene),
+    renderTemplate(component),
     "</template>",
     "",
     "<script>",
-    renderScript(scene),
+    renderScript(component),
     "</script>",
-  ];
-
-  return component.join("\n");
+  ].join("\n");
 }
 
 const writeComponent = function (name, content) {

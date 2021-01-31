@@ -2,8 +2,9 @@ node_modules
 package-lock.json
 yarn.lock
 
-src/components/*
+# Activating git on these files to not lose progress at start
+# src/components/*
 !src/components/.gitkeep
 
-src/saves/*
+# src/saves/*
 !src/saves/.gitkeep
