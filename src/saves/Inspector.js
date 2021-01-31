@@ -3,8 +3,7 @@ module.exports = {
   "data": {
     "editable": true,
     "scene": "",
-    "wave": "https://media1.tenor.com/images/f38bd4f0ae23b4d7d594c388ab4f09ed/tenor.gif",
-    "w": 100
+    "wave": "https://media1.tenor.com/images/f38bd4f0ae23b4d7d594c388ab4f09ed/tenor.gif"
   },
   "mounted": "() => {\n\nthis.scene = JSON.stringify(this.$data._component, null, 4);\n  }",
   "methods": {
@@ -17,7 +16,7 @@ module.exports = {
   "template": [
     {
       "tag": "span",
-      "children": "INSPECTOR !"
+      "children": "INSPECTOR ! :smart:"
     },
     {
       "tag": "input",
@@ -73,18 +72,6 @@ module.exports = {
         "class": "bg-red-200"
       },
       "children": "Number of children = {{ $data._component.template.length }}"
-    },
-    {
-      "tag": "img",
-      "attributes": {
-        "class": "rounded shadow m-4 transform animate-bounce rotate-12",
-        ":width": "w",
-        ":src": "wave"
-      }
-    },
-    {
-      "tag": "pre",
-      "children": "src = {{ wave }}"
     }
   ]
 };

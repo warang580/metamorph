@@ -10,11 +10,13 @@
   - [x] Saving changes in DB
   - [x] check invalid JSON before trying to apply/save changes (electron-side)
   - [x] dynamic version of updating component instead of hardcoded
-  - [ ] dynamic components (not just Scene)
-    - Inspector
-    - Editor
-
-- need props
+  - [x] dynamic components (not just Scene)
+  - need props (<Editor v-model="xxx">)
+  - faire un editor permettant d'éditer chirurgicalement un template ou un élément
+  - pouvoir ajouter un component qui n'existe pas sans que ça plante pour pouvoir y ajouter des éléments facilement
+    - ajouter "tag": "MyComponent",
+    - le système l'ajoute aux systèmes et voit qu'il n'existe pas donc créé un fichier "vierge" de component qui contient juste un name I guess, et là tu peux rajotuer des choses là dedans pour afficher des trucs :parfait:
+      - bon il faut probablement juste un template avec just eun élement genre [MyComponent] pour savoir où il est ... bon en fait faut aussi l'inspector pour pouvoir l'éditer direct ... à moins de pouvoir dire <Inspector for="MyComponent"> et on peut le faire sans être dedans !
 
 - Workflow
   - Start electron
@@ -29,19 +31,22 @@
     maybe send them to the scene ? or root ? so they can be used
     // @TODO: gérer un <Root> qui gère <Scene> + ses data ? c'est déjà un peu le rôle de App.vue
   - console.log should be visible everywhere
+    - je pense qu'un console.log doit générer un event qu'on peut catch ou non
   - electron crashes should be backed up
   - same for vite
     - writing "$attrs.scene.template.0" crashed the whole thing (because it's [0])
       - I've had to manually edit the generated file so it was correct
       (maybe because I don't have a single source of truth)
 
-- Make intermediate component like "Inspector"
-  // Gérer les dépendences entre fichiers si <A> demande <B>
-
 - Use env variables for PORT, WINDOW_W, WINDOW_H
 - Data.get ?
 
 /* Tout ce qui est console.loggé ou archéologisé doit être visible ! */
+
+# Améliorations
+
+- envisager un store global avec les components dynamiques dedans, plutôt que de passer le code source au widget en question et de polluer ses données
+- permettrait à l'inspecteur d'utiliser le nom du component pour éditer sa source (bon par contre pour le contexte ça suffit pas, il faut lui passer this.$data)
 
 # Testing
 
