@@ -109,7 +109,6 @@ const renderScript = function (component, components) {
       "data() {",
         "return {",
           "_component: " + JSON.stringify(component/*, null, 2*/) + ",",
-          "_components: " + JSON.stringify(components/*, null, 2*/) + ",",
           renderData(component).join(",\n"),
         "};",
       "},",
@@ -177,6 +176,7 @@ const generate = function (current = null) {
 
   // Then generate all components
   // @TODO: if (current) only generate SceneManager + "current" component, not everything
+  // @TODO: iterate on files in saves/ except _components
   let componentNames = require("../saves/_components.js");
   let components     = {};
 

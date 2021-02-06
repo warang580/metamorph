@@ -5,11 +5,11 @@ module.exports = {
   ],
   "data": {
     "editable": false,
-    "scene": ""
+    "component": ""
   },
-  "mounted": "() => {\n\nconsole.log('mounted', this.$data._components); let all = this.$data._components || {}\nlet c = all[this.for]; this.scene = JSON.stringify(c, null, 4);\n  }",
+  "mounted": "() => {\n\nthis.component = JSON.stringify(this.$data._component, null, 4);\n  }",
   "methods": {
-    "update": "() => {\n\nthis._compile(this.scene);\n  }",
+    "update": "() => {\n\nthis._compile(this.component);\n  }",
     "_compile": "(component) => {\nconsole.log('compiling ...'); \nipcRenderer.send('generate', { component: component });\n}"
   },
   "computed": {
@@ -24,7 +24,7 @@ module.exports = {
           "attributes": {
             "class": "text-xl font-bold"
           },
-          "children": "Inspecting 0 &lt;{{ for }}&gt;"
+          "children": "Inspecting &lt;{{ for }}&gt;"
         },
         {
           "tag": "input",
@@ -54,7 +54,7 @@ module.exports = {
               "tag": "textarea",
               "attributes": {
                 "class": "block w-1/2 p-4 overflow-auto transform rotate-0 rounded shadow resize border m-4 text-xs font-mono",
-                "v-model": "scene",
+                "v-model": "component",
                 "v-if": "editable",
                 "style": "height: 400px"
               }
