@@ -44,6 +44,12 @@ const renderTemplate = function (component) {
   return renderElements(component.template);
 }
 
+const renderProps = function renderProps(component) {
+  let props = component.props || {};
+
+  return JSON.stringify(props/*, null, 2*/)
+}
+
 const renderData = function (component) {
   let data = component.data || {};
   return Object.entries(data).map(([k,v]) => {
@@ -89,7 +95,7 @@ const renderComponents = function (component) {
   }).join("\n");
 }
 
-const renderScript = function (component) {
+const renderScript = function (component, components) {
   let output = [
     "const { ipcRenderer } = require('electron');",
     "",
@@ -98,9 +104,12 @@ const renderScript = function (component) {
     "export default {",
       "components: {" + renderComponents(component) + "},",
       "",
+      "props: " + renderProps(component) + ",",
+      "",
       "data() {",
         "return {",
           "_component: " + JSON.stringify(component/*, null, 2*/) + ",",
+          "_components: " + JSON.stringify(components/*, null, 2*/) + ",",
           renderData(component).join(",\n"),
         "};",
       "},",
@@ -123,14 +132,15 @@ const renderScript = function (component) {
   return output.join("\n");
 }
 
-const renderComponent = function (component) {
+const renderComponent = function (component, components) {
   return [
+    // @NOTE: we don't avoid fragment instances
     "<template>",
     renderTemplate(component),
     "</template>",
     "",
     "<script>",
-    renderScript(component),
+    renderScript(component, components),
     "</script>",
   ].join("\n");
 }
@@ -153,6 +163,38 @@ const writeFile = function (dir, file, content) {
   return fs.writeFileSync(path.join(process.cwd(), dir, file), content);
 }
 
+const update = function (component) {
+  saveComponent (component.name, renderSave     (component));
+  writeComponent(component.name, renderComponent(component));
+}
+
+/** Generate all components */
+const generate = function (current = null) {
+  // If some component was given, save it first
+  if (current) {
+    saveComponent(current.name, renderSave(current));
+  }
+
+  // Then generate all components
+  // @TODO: if (current) only generate SceneManager + "current" component, not everything
+  let componentNames = require("../saves/_components.js");
+  let components     = {};
+
+  // Load components from file
+  for (let componentName of componentNames) {
+    components[componentName] = require(`../saves/${componentName}.js`);
+  }
+
+  for (let [name, component] of Object.entries(components)) {
+    if (! current || current.name == name || name == "SceneManager") {
+      writeComponent(
+        name,
+        renderComponent(component, components)
+      );
+    }
+  }
+}
+
 module.exports = {
   renderAttributes,
   renderElements,
@@ -161,4 +203,7 @@ module.exports = {
 
   renderSave,
   saveComponent,
+
+  generate,
+  update,
 }

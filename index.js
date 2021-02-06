@@ -4,7 +4,7 @@ const { app, ipcMain, BrowserWindow, Notification } = require('electron')
 const path = require('path')
 const fs = require('fs')
 
-const { renderComponent, writeComponent, renderSave, saveComponent } = require('./src/utils/generator.js');
+const { renderComponent, writeComponent, renderSave, saveComponent, generate, update } = require('./src/utils/generator.js');
 
 let win;
 let start = Date.now();
@@ -12,14 +12,18 @@ let start = Date.now();
 app.disableHardwareAcceleration()
 
 ipcMain.on('generate', (event, args) => {
-  console.log("Generating", args.name);
-
   // @NOTE: JSON.parse because we can't clone "Proxy" objects (data fields of vue component) so we stringify them before sending
   try {
-    let scene = JSON.parse(args.component);
-    writeComponent(args.name, renderComponent(scene));
-    saveComponent (args.name, renderSave(scene));
-    saveComponent (args.name, renderSave(scene));
+    let component = JSON.parse(args.component);
+
+    if (! component.name) {
+      throw "Components should have names";
+    }
+
+    // @NOTE: to trigger Vite updates, writing should be done here and not in generate ???
+    // saveComponent (component.name, renderSave     (component));
+    // writeComponent(component.name, renderComponent(component));
+    update(component);
   } catch (err) {
     console.log("Can't parse component", err, args);
   }
