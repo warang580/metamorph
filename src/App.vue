@@ -1,13 +1,13 @@
 <template>
-  <Scene />
+  <SceneManager />
 </template>
 
 <script>
-import Scene from './components/Scene.vue'
+import SceneManager from './components/SceneManager.vue'
 
 export default {
   components: {
-    Scene,
+    SceneManager,
   },
 }
 </script>
