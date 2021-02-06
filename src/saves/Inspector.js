@@ -7,7 +7,7 @@ module.exports = {
     "editable": false,
     "component": ""
   },
-  "mounted": "() => { ipcRenderer.on('generated', (_, args) => { this.init(args) } )}",
+  "mounted": "() => { ipcRenderer.send('list-generated'); ipcRenderer.on('generated', (_, args) => { this.init(args) } )}",
   "methods": {
     "init": "(args) => { console.log('got', args, 'for', this.for); this.component = JSON.stringify(args.components[this.for], null, 4); }",
     "update": "() => {\n\nthis._compile(this.component);\n  }",
@@ -27,14 +27,6 @@ module.exports = {
             "class": "text-xl font-bold bg-red-200 rounded"
           },
           "children": "&lt;{{ for }}&gt;"
-        },
-        {
-          "tag": "input",
-          "attributes": {
-            "type": "checkbox",
-            "class": "border rounded animate-pulse m-4 p-2",
-            "v-model": "editable"
-          }
         },
         {
           "tag": "div",

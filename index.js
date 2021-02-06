@@ -35,6 +35,14 @@ ipcMain.on('generate', (event, args) => {
   }
 });
 
+ipcMain.on('list-generated', (event, args) => {
+  let components = getAllComponents();
+  
+  win.webContents.send('generated', {
+    components: components,
+  });
+});
+
 // @NOTE: this event happens when main.js is runned again (page reloads)
 ipcMain.on('reload', (event, args) => {
   console.log("[vite] page reload");
