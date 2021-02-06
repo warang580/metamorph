@@ -1,6 +1,5 @@
 <template>
 <div ><span @click="() => { this.editable = ! this.editable }" class="text-xl font-bold bg-red-200 rounded">&lt;{{ for }}&gt;</span>
-<input type="checkbox" class="border rounded animate-pulse m-4 p-2" v-model="editable" />
 <div class="border" v-if="editable"><button class="border rounded bg-blue-300 m-4 p-2" @click="update" v-if="editable">Save</button>
 <textarea class="block w-1/2 p-4 overflow-auto transform rotate-0 rounded shadow resize border m-4 text-xs font-mono" v-model="component" v-if="editable" style="height: 400px" />
 <button class="border rounded animate-pulse bg-blue-300 m-4 p-2" @click="update" v-if="editable">Save</button></div>
@@ -25,7 +24,7 @@ component: ""
 },
 
 mounted() {
-(() => { ipcRenderer.on('generated', (_, args) => { this.init(args) } )})();
+(() => { ipcRenderer.send('list-generated'); ipcRenderer.on('generated', (_, args) => { this.init(args) } )})();
 },
 unmounted() {
 (() => {})();

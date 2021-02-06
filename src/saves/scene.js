@@ -2,7 +2,7 @@ module.exports = {
   "name": "Scene",
   "data": {
     "wave": "https://media1.tenor.com/images/f38bd4f0ae23b4d7d594c388ab4f09ed/tenor.gif",
-    "w": 100
+    "w": 300
   },
   "components": [
     "Inspector",
@@ -15,7 +15,7 @@ module.exports = {
     {
       "tag": "span",
       "attributes": {
-        "class": "font-bold"
+        "class": "font-bold mb-4"
       },
       "children": "My Scene"
     },
