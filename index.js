@@ -4,7 +4,7 @@ const { app, ipcMain, BrowserWindow, Notification } = require('electron')
 const path = require('path')
 const fs = require('fs')
 
-const { renderComponent, writeComponent, renderSave, saveComponent, generate, update } = require('./src/utils/generator.js');
+const { update, getAllComponents } = require('./src/utils/generator.js');
 
 let win;
 let start = Date.now();
@@ -20,19 +20,29 @@ ipcMain.on('generate', (event, args) => {
       throw "Components should have names";
     }
 
-    // @NOTE: to trigger Vite updates, writing should be done here and not in generate ???
-    // saveComponent (component.name, renderSave     (component));
-    // writeComponent(component.name, renderComponent(component));
     update(component);
+
+    let components = getAllComponents();
+
+    win.webContents.send('generated', {
+      name:       component.name,
+      component:  component,
+      components: components,
+    });
+
   } catch (err) {
-    console.log("Can't parse component", err, args);
+    console.error("Can't parse component", err, args);
   }
 });
 
 // @NOTE: this event happens when main.js is runned again (page reloads)
 ipcMain.on('reload', (event, args) => {
   console.log("[vite] page reload");
-  // win.webContents.send('ready');
+
+  // @TEMP: send components at start like this
+  win.webContents.send('generated', {
+    components: getAllComponents(),
+  });
 });
 
 

@@ -1,6 +1,12 @@
 const path = require('path');
 const fs   = require('fs');
 
+const requireUncached = function (module) {
+  delete require.cache[require.resolve(module)];
+
+  return require(module);
+}
+
 const renderAttributes = function (attrs) {
   let attributes = [];
 
@@ -63,6 +69,12 @@ const renderMounted = function (component) {
   return "(" + String(fn) + ")();";
 }
 
+const renderUnmounted = function (component) {
+  let fn = component.unmounted ? component.unmounted : () => {};
+
+  return "(" + String(fn) + ")();";
+}
+
 const renderMethods = function (component) {
   let methods = component.methods || {};
 
@@ -108,7 +120,6 @@ const renderScript = function (component, components) {
       "",
       "data() {",
         "return {",
-          "_component: " + JSON.stringify(component/*, null, 2*/) + ",",
           renderData(component).join(",\n"),
         "};",
       "},",
@@ -116,6 +127,9 @@ const renderScript = function (component, components) {
       // TODO: all functions can be refactored
       "mounted() {",
         renderMounted(component),
+      "},",
+      "unmounted() {",
+        renderUnmounted(component),
       "},",
       "",
       "methods: {",
@@ -148,8 +162,8 @@ const writeComponent = function (name, content) {
   return writeFile('src/components', `${name}.vue`, content);
 }
 
-const renderSave = function (scene) {
-  return "module.exports = " + JSON.stringify(scene, null, 2) + ";"
+const renderSave = function (save) {
+  return "module.exports = " + JSON.stringify(save, null, 2) + ";"
 }
 
 const saveComponent = function (name, content) {
@@ -162,37 +176,57 @@ const writeFile = function (dir, file, content) {
   return fs.writeFileSync(path.join(process.cwd(), dir, file), content);
 }
 
-const update = function (component) {
-  saveComponent (component.name, renderSave     (component));
-  writeComponent(component.name, renderComponent(component));
-}
+/** Get an updated list of all components */
+const getAllComponents = function () {
+  // Get files from saves
+  let componentNames = fs.readdirSync('src/saves/')
+  // Remove metadata files
+  .filter(f => f.endsWith('.js') && f != '_components.js')
+  // Remove .js extension
+  .map(f => f.substr(0, f.length - 3));
 
-/** Generate all components */
-const generate = function (current = null) {
-  // If some component was given, save it first
-  if (current) {
-    saveComponent(current.name, renderSave(current));
-  }
 
-  // Then generate all components
-  // @TODO: if (current) only generate SceneManager + "current" component, not everything
-  // @TODO: iterate on files in saves/ except _components
-  let componentNames = require("../saves/_components.js");
-  let components     = {};
+  let components = {};
 
   // Load components from file
   for (let componentName of componentNames) {
-    components[componentName] = require(`../saves/${componentName}.js`);
+    components[componentName] = requireUncached(`../saves/${componentName}.js`);
   }
 
+  return components;
+}
+/** Update a specific component */
+const update = function (component) {
+  // We update component (save + file)
+  saveComponent (component.name, renderSave     (component));
+  writeComponent(component.name, renderComponent(component));
+
+
+  // Get updated list of other components
+  let components = getAllComponents();
+
+  // We update list with our "new component"
+  components[component.name] = component;
+
+  // Save updated list
+  saveComponent('_components', renderSave(components));
+}
+
+/** Generate all components */
+const generate = function () {
+  // Get all components
+  let components = getAllComponents();
+
+  // Write each component .vue file
   for (let [name, component] of Object.entries(components)) {
-    if (! current || current.name == name || name == "SceneManager") {
-      writeComponent(
-        name,
-        renderComponent(component, components)
-      );
-    }
+    writeComponent(
+      name,
+      renderComponent(component, components)
+    );
   }
+
+  // Save list into _components.js
+  saveComponent('_components', renderSave(components));
 }
 
 module.exports = {
@@ -203,6 +237,8 @@ module.exports = {
 
   renderSave,
   saveComponent,
+
+  getAllComponents,
 
   generate,
   update,
