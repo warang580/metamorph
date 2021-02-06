@@ -7,6 +7,6 @@ src/components/*
 
 # Activating git on these files to not lose progress at start
 # src/saves/*
-!src/saves/_components.js
+src/saves/_components.js
 
 !src/saves/.gitkeep
