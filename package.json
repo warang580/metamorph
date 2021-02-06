@@ -7,6 +7,7 @@
   "scripts": {
     "generate": "babel-node generate.js",
     "electron": "yarn generate && electron .",
+    "devtools": ".\\node_modules\\.bin\\vue-devtools",
     "vite": "vite",
     "build": "vite build"
   },
@@ -19,6 +20,7 @@
     "@babel/node": "^7.12.10",
     "@vitejs/plugin-vue": "^1.0.4",
     "@vue/compiler-sfc": "^3.0.5",
+    "@vue/devtools": "^6.0.0-beta.6",
     "autoprefixer": "^10.2.1",
     "electron": "^11.2.0",
     "postcss": "^8.2.4",
