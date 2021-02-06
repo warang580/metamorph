@@ -6,24 +6,25 @@ module.exports = {
   },
   "components": [
     "Inspector",
-    "Editor",
+    "Editor"
   ],
   "mounted": "() => {}",
-  "methods": {
-  },
-  "computed": {
-  },
+  "methods": {},
+  "computed": {},
   "template": [
     {
       "tag": "span",
-      "children": "My Scene",
+      "attributes": {
+        "class": "font-bold"
+      },
+      "children": "My Scene"
     },
     {
       "tag": "img",
       "attributes": {
         "class": "rounded shadow m-4 transform animate-bounce rotate-12",
         ":width": "w",
-        ":src": "wave",
+        ":src": "wave"
       }
     },
     {
@@ -32,20 +33,14 @@ module.exports = {
         "type": "text",
         "v-if": "false",
         "v-model": "wave",
-        "class": "border p-4 w-1/2 block",
+        "class": "border p-4 w-1/2 block"
       }
     },
     {
       "tag": "Editor",
       "attributes": {
-        "v-model": "wave",
-      },
-    },
-    {
-      "tag": "Inspector",
-      "attributes": {
-        "for": "Editor",
-      },
-    },
+        "v-model": "wave"
+      }
+    }
   ]
 };

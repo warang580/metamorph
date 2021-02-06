@@ -2,7 +2,6 @@
 <Scene  />
 <Inspector for="SceneManager" />
 <Inspector for="Scene" />
-<Inspector for="Inspector" />
 </template>
 
 <script>
@@ -19,12 +18,14 @@ props: {},
 
 data() {
 return {
-_component: {"name":"SceneManager","components":["Scene","Inspector"],"template":[{"tag":"Scene"},{"tag":"Inspector","attributes":{"for":"SceneManager"}},{"tag":"Inspector","attributes":{"for":"Scene"}},{"tag":"Inspector","attributes":{"for":"Inspector"}}]},
 
 };
 },
 
 mounted() {
+(() => {})();
+},
+unmounted() {
 (() => {})();
 },
 

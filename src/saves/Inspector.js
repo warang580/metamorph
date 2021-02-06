@@ -7,8 +7,9 @@ module.exports = {
     "editable": false,
     "component": ""
   },
-  "mounted": "() => {\n\nthis.component = JSON.stringify(this.$data._component, null, 4);\n  }",
+  "mounted": "() => { ipcRenderer.on('generated', (_, args) => { this.init(args) } )}",
   "methods": {
+    "init": "(args) => { console.log('got', args, 'for', this.for); this.component = JSON.stringify(args.components[this.for], null, 4); }",
     "update": "() => {\n\nthis._compile(this.component);\n  }",
     "_compile": "(component) => {\nconsole.log('compiling ...'); \nipcRenderer.send('generate', { component: component });\n}"
   },
@@ -22,22 +23,23 @@ module.exports = {
         {
           "tag": "span",
           "attributes": {
-            "class": "text-xl font-bold"
+            "@click": "() => { this.editable = ! this.editable }",
+            "class": "text-xl font-bold bg-red-200 rounded"
           },
-          "children": "Inspecting &lt;{{ for }}&gt;"
+          "children": "&lt;{{ for }}&gt;"
         },
         {
           "tag": "input",
           "attributes": {
             "type": "checkbox",
-            "class": "border rounded animate-pulse bg-green-300 m-4 p-2",
+            "class": "border rounded animate-pulse m-4 p-2",
             "v-model": "editable"
           }
         },
         {
           "tag": "div",
           "attributes": {
-            "class": "border bg-blue-100",
+            "class": "border",
             "v-if": "editable"
           },
           "children": [

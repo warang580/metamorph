@@ -19,12 +19,6 @@ module.exports = {
       "attributes": {
         "for": "Scene"
       }
-    },
-    {
-      "tag": "Inspector",
-      "attributes": {
-        "for": "Inspector"
-      }
     }
   ]
 };
