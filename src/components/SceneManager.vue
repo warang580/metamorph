@@ -1,6 +1,5 @@
 <template>
 <Scene  />
-<Inspector for="SceneManager" />
 <Inspector for="Scene" />
 <Inspector for="Inspector" />
 </template>

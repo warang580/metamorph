@@ -2,7 +2,7 @@ module.exports = {
   "name": "Scene",
   "data": {
     "wave": "https://media1.tenor.com/images/f38bd4f0ae23b4d7d594c388ab4f09ed/tenor.gif",
-    "w": 300
+    "w": 100
   },
   "components": [
     "Inspector",
@@ -22,24 +22,31 @@ module.exports = {
     {
       "tag": "img",
       "attributes": {
-        "class": "rounded shadow m-4 transform animate-bounce rotate-12",
+        "class": "rounded shadow m-4 transform animate-pulse rotate-12",
         ":width": "w",
         ":src": "wave"
       }
     },
     {
-      "tag": "input",
+      "tag": "Editor",
       "attributes": {
-        "type": "text",
         "v-if": "false",
-        "v-model": "wave",
-        "class": "border p-4 w-1/2 block"
+        "v-model": "w",
+        "title": "Image size="
       }
     },
     {
       "tag": "Editor",
       "attributes": {
-        "v-model": "wave"
+        "v-if": "false",
+        "v-model": "wave",
+        "title": "Image src="
+      }
+    },
+    {
+      "tag": "Inspector",
+      "attributes": {
+        "for": "Editor"
       }
     }
   ]

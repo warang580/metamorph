@@ -1,9 +1,8 @@
 <template>
-<div ><span @click="() => { this.editable = ! this.editable }" class="text-xl font-bold bg-red-200 rounded">&lt;{{ for }}&gt;</span>
+<div ><span @click="() => { this.editable = ! this.editable }" class="text-xl font-bold bg-red-200 rounded text-xs font-mono">&lt;{{ for }}&gt;</span>
 <div class="border" v-if="editable"><button class="border rounded bg-blue-300 m-4 p-2" @click="update" v-if="editable">Save</button>
-<textarea class="block w-1/2 p-4 overflow-auto transform rotate-0 rounded shadow resize border m-4 text-xs font-mono" v-model="component" v-if="editable" style="height: 400px" />
-<button class="border rounded animate-pulse bg-blue-300 m-4 p-2" @click="update" v-if="editable">Save</button></div>
-<pre class="bg-red-200 text-xs font-mono" v-if="false">{{ $data._component.template }}</pre></div>
+<textarea class="block w-11/12 p-4 overflow-auto transform rotate-0 rounded shadow resize border m-4 text-sm font-mono bg-gray-900 text-gray-100" v-model="component" v-if="editable" style="min-height: 400px" />
+<button class="border rounded animate-pulse bg-blue-300 m-4 p-2" @click="update" v-if="editable">Save</button></div></div>
 </template>
 
 <script>
@@ -31,7 +30,7 @@ unmounted() {
 },
 
 methods: {
-init(...args) { return ((args) => { console.log('got', args, 'for', this.for); this.component = JSON.stringify(args.components[this.for], null, 4); })(...args); },
+init(...args) { return ((args) => { this.component = JSON.stringify(args.components[this.for], null, 4); })(...args); },
 update(...args) { return (() => {
 
 this._compile(this.component);

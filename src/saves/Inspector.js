@@ -9,7 +9,7 @@ module.exports = {
   },
   "mounted": "() => { ipcRenderer.send('list-generated'); ipcRenderer.on('generated', (_, args) => { this.init(args) } )}",
   "methods": {
-    "init": "(args) => { console.log('got', args, 'for', this.for); this.component = JSON.stringify(args.components[this.for], null, 4); }",
+    "init": "(args) => { this.component = JSON.stringify(args.components[this.for], null, 4); }",
     "update": "() => {\n\nthis._compile(this.component);\n  }",
     "_compile": "(component) => {\nconsole.log('compiling ...'); \nipcRenderer.send('generate', { component: component });\n}"
   },
@@ -24,7 +24,7 @@ module.exports = {
           "tag": "span",
           "attributes": {
             "@click": "() => { this.editable = ! this.editable }",
-            "class": "text-xl font-bold bg-red-200 rounded"
+            "class": "text-xl font-bold bg-red-200 rounded text-xs font-mono"
           },
           "children": "&lt;{{ for }}&gt;"
         },
@@ -47,10 +47,10 @@ module.exports = {
             {
               "tag": "textarea",
               "attributes": {
-                "class": "block w-1/2 p-4 overflow-auto transform rotate-0 rounded shadow resize border m-4 text-xs font-mono",
+                "class": "block w-11/12 p-4 overflow-auto transform rotate-0 rounded shadow resize border m-4 text-sm font-mono bg-gray-900 text-gray-100",
                 "v-model": "component",
                 "v-if": "editable",
-                "style": "height: 400px"
+                "style": "min-height: 400px"
               }
             },
             {
@@ -63,14 +63,6 @@ module.exports = {
               "children": "Save"
             }
           ]
-        },
-        {
-          "tag": "pre",
-          "attributes": {
-            "class": "bg-red-200 text-xs font-mono",
-            "v-if": "false"
-          },
-          "children": "{{ $data._component.template }}"
         }
       ]
     }

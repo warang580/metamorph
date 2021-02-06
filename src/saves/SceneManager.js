@@ -11,12 +11,6 @@ module.exports = {
     {
       "tag": "Inspector",
       "attributes": {
-        "for": "SceneManager"
-      }
-    },
-    {
-      "tag": "Inspector",
-      "attributes": {
         "for": "Scene"
       }
     },

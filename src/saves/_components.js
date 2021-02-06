@@ -14,10 +14,10 @@ module.exports = {
     },
     "template": [
       {
-        "tag": "span",
+        "tag": "div",
         "attributes": {
           "v-if": "title",
-          "class": "text-xl font-bold"
+          "class": "ml-6 text-xl font-bold text-xs font-mono"
         },
         "children": "{{ title }}"
       },
@@ -25,7 +25,7 @@ module.exports = {
         "tag": "textarea",
         "attributes": {
           "v-model": "contents",
-          "class": "block w-1/2 p-4 overflow-auto transform rotate-0 rounded shadow resize border m-4 text-xs font-mono",
+          "class": "block w-11/12 p-4 overflow-auto transform rotate-0 rounded shadow resize border m-4 text-xs font-mono text-sm font-mono bg-gray-900 text-gray-100",
           "style": "height: 400px"
         }
       },
@@ -50,7 +50,7 @@ module.exports = {
     },
     "mounted": "() => { ipcRenderer.send('list-generated'); ipcRenderer.on('generated', (_, args) => { this.init(args) } )}",
     "methods": {
-      "init": "(args) => { console.log('got', args, 'for', this.for); this.component = JSON.stringify(args.components[this.for], null, 4); }",
+      "init": "(args) => { this.component = JSON.stringify(args.components[this.for], null, 4); }",
       "update": "() => {\n\nthis._compile(this.component);\n  }",
       "_compile": "(component) => {\nconsole.log('compiling ...'); \nipcRenderer.send('generate', { component: component });\n}"
     },
@@ -65,7 +65,7 @@ module.exports = {
             "tag": "span",
             "attributes": {
               "@click": "() => { this.editable = ! this.editable }",
-              "class": "text-xl font-bold bg-red-200 rounded"
+              "class": "text-xl font-bold bg-red-200 rounded text-xs font-mono"
             },
             "children": "&lt;{{ for }}&gt;"
           },
@@ -88,10 +88,10 @@ module.exports = {
               {
                 "tag": "textarea",
                 "attributes": {
-                  "class": "block w-1/2 p-4 overflow-auto transform rotate-0 rounded shadow resize border m-4 text-xs font-mono",
+                  "class": "block w-11/12 p-4 overflow-auto transform rotate-0 rounded shadow resize border m-4 text-sm font-mono bg-gray-900 text-gray-100",
                   "v-model": "component",
                   "v-if": "editable",
-                  "style": "height: 400px"
+                  "style": "min-height: 400px"
                 }
               },
               {
@@ -104,14 +104,6 @@ module.exports = {
                 "children": "Save"
               }
             ]
-          },
-          {
-            "tag": "pre",
-            "attributes": {
-              "class": "bg-red-200 text-xs font-mono",
-              "v-if": "false"
-            },
-            "children": "{{ $data._component.template }}"
           }
         ]
       }
@@ -121,7 +113,7 @@ module.exports = {
     "name": "Scene",
     "data": {
       "wave": "https://media1.tenor.com/images/f38bd4f0ae23b4d7d594c388ab4f09ed/tenor.gif",
-      "w": 300
+      "w": 100
     },
     "components": [
       "Inspector",
@@ -141,24 +133,31 @@ module.exports = {
       {
         "tag": "img",
         "attributes": {
-          "class": "rounded shadow m-4 transform animate-bounce rotate-12",
+          "class": "rounded shadow m-4 transform animate-pulse rotate-12",
           ":width": "w",
           ":src": "wave"
         }
       },
       {
-        "tag": "input",
+        "tag": "Editor",
         "attributes": {
-          "type": "text",
           "v-if": "false",
-          "v-model": "wave",
-          "class": "border p-4 w-1/2 block"
+          "v-model": "w",
+          "title": "Image size="
         }
       },
       {
         "tag": "Editor",
         "attributes": {
-          "v-model": "wave"
+          "v-if": "false",
+          "v-model": "wave",
+          "title": "Image src="
+        }
+      },
+      {
+        "tag": "Inspector",
+        "attributes": {
+          "for": "Editor"
         }
       }
     ]
@@ -172,12 +171,6 @@ module.exports = {
     "template": [
       {
         "tag": "Scene"
-      },
-      {
-        "tag": "Inspector",
-        "attributes": {
-          "for": "SceneManager"
-        }
       },
       {
         "tag": "Inspector",
