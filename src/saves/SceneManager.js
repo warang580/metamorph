@@ -17,7 +17,19 @@ module.exports = {
     {
       "tag": "Inspector",
       "attributes": {
+        "for": "Editor"
+      }
+    },
+    {
+      "tag": "Inspector",
+      "attributes": {
         "for": "Inspector"
+      }
+    },
+    {
+      "tag": "Inspector",
+      "attributes": {
+        "for": "Emoji"
       }
     }
   ]

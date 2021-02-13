@@ -24,8 +24,8 @@ module.exports = {
       "tag": "textarea",
       "attributes": {
         "v-model": "contents",
-        "class": "block w-11/12 p-4 overflow-auto transform rotate-0 rounded shadow resize border m-4 text-xs font-mono text-sm font-mono bg-gray-900 text-gray-100",
-        "style": "height: 400px"
+        "class": "block w-11/12 p-4 overflow-auto transform rotate-0 rounded shadow resize border m-4 text-xs font-mono text-sm font-mono bg-blue-900 text-gray-100",
+        "style": "height: 50px"
       }
     },
     {

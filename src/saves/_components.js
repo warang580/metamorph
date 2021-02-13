@@ -25,8 +25,8 @@ module.exports = {
         "tag": "textarea",
         "attributes": {
           "v-model": "contents",
-          "class": "block w-11/12 p-4 overflow-auto transform rotate-0 rounded shadow resize border m-4 text-xs font-mono text-sm font-mono bg-gray-900 text-gray-100",
-          "style": "height: 400px"
+          "class": "block w-11/12 p-4 overflow-auto transform rotate-0 rounded shadow resize border m-4 text-xs font-mono text-sm font-mono bg-blue-900 text-gray-100",
+          "style": "height: 50px"
         }
       },
       {
@@ -36,6 +36,40 @@ module.exports = {
           "@click": "update"
         },
         "children": "Save"
+      }
+    ]
+  },
+  "Emoji": {
+    "name": "Emoji",
+    "components": [
+      "Inspector"
+    ],
+    "data": {
+      "smileys": "https://www.w3schools.com/charsets/ref_emoji_smileys.asp",
+      "ref": "https://www.w3schools.com/charsets/ref_emoji.asp",
+      "emojis": {
+        "smile": "😀",
+        "grin": "😁",
+        "joy": "😂",
+        "angel": "😇",
+        "evil": "😈"
+      }
+    },
+    "template": [
+      {
+        "tag": "div",
+        "attributes": {
+          "class": "text-4xl"
+        },
+        "children": "{{ emojis.joy }}"
+      },
+      {
+        "tag": "div",
+        "attributes": {
+          "class": "text-4xl",
+          "v-for": "[k, v] in Object.entries(emojis)"
+        },
+        "children": "{{ v }} is :{{ k }}:"
       }
     ]
   },
@@ -65,7 +99,7 @@ module.exports = {
             "tag": "span",
             "attributes": {
               "@click": "() => { this.editable = ! this.editable }",
-              "class": "text-xl font-bold bg-red-200 rounded text-xs font-mono"
+              "class": "text-xl font-bold cursor-pointer bg-red-200 rounded text-xs font-mono"
             },
             "children": "&lt;{{ for }}&gt;"
           },
@@ -88,7 +122,7 @@ module.exports = {
               {
                 "tag": "textarea",
                 "attributes": {
-                  "class": "block w-11/12 p-4 overflow-auto transform rotate-0 rounded shadow resize border m-4 text-sm font-mono bg-gray-900 text-gray-100",
+                  "class": "block w-11/12 p-4 overflow-auto transform rotate-0 rounded shadow resize border m-4 text-sm font-mono bg-blue-900 text-gray-100",
                   "v-model": "component",
                   "v-if": "editable",
                   "style": "min-height: 400px"
@@ -113,11 +147,12 @@ module.exports = {
     "name": "Scene",
     "data": {
       "wave": "https://media1.tenor.com/images/f38bd4f0ae23b4d7d594c388ab4f09ed/tenor.gif",
-      "w": 100
+      "w": 200
     },
     "components": [
       "Inspector",
-      "Editor"
+      "Editor",
+      "Emoji"
     ],
     "mounted": "() => {}",
     "methods": {},
@@ -129,6 +164,15 @@ module.exports = {
           "class": "font-bold mb-4"
         },
         "children": "My Scene"
+      },
+      {
+        "tag": "Emoji"
+      },
+      {
+        "tag": "Inspector",
+        "attributes": {
+          "for": "Emoji"
+        }
       },
       {
         "tag": "img",
@@ -147,17 +191,15 @@ module.exports = {
         }
       },
       {
-        "tag": "Editor",
-        "attributes": {
-          "v-if": "false",
-          "v-model": "wave",
-          "title": "Image src="
-        }
+        "tag": "span",
+        "children": "data = {{ $data }}"
       },
       {
-        "tag": "Inspector",
+        "tag": "Editor",
         "attributes": {
-          "for": "Editor"
+          "v-if": "true",
+          "v-model": "wave",
+          "title": "Image src="
         }
       }
     ]
@@ -181,7 +223,19 @@ module.exports = {
       {
         "tag": "Inspector",
         "attributes": {
+          "for": "Editor"
+        }
+      },
+      {
+        "tag": "Inspector",
+        "attributes": {
           "for": "Inspector"
+        }
+      },
+      {
+        "tag": "Inspector",
+        "attributes": {
+          "for": "Emoji"
         }
       }
     ]

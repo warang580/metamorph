@@ -1,7 +1,9 @@
 <template>
 <Scene  />
 <Inspector for="Scene" />
+<Inspector for="Editor" />
 <Inspector for="Inspector" />
+<Inspector for="Emoji" />
 </template>
 
 <script>
