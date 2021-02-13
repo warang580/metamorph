@@ -37,7 +37,7 @@ ipcMain.on('generate', (event, args) => {
 
 ipcMain.on('list-generated', (event, args) => {
   let components = getAllComponents();
-  
+
   win.webContents.send('generated', {
     components: components,
   });
@@ -66,6 +66,9 @@ function createWindow () {
 
   // @TEMP: disable menu bar as we don't use it yet
   win.setMenuBarVisibility(false);
+
+  // @TEMP: open DevTools
+  win.webContents.openDevTools();
 
   // Visit Vite dev environment
   win.loadURL('http://localhost:3000/')
