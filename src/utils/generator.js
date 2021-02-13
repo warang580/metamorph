@@ -197,13 +197,46 @@ const getAllComponents = function () {
 }
 /** Update a specific component */
 const update = function (component) {
+  // Get updated list of other components
+  let components = getAllComponents();
+
+  // Check if there are new components to create
+  let newComponents = (component.components || []).filter(code => ! components[code]);
+
+  // We create a new component
+  newComponents.forEach(code => {
+    // @TODO: refactor into another function
+    let emptyComponent = {
+      "name": code,
+      "components": [
+        "Inspector"
+      ],
+      "template": [
+        {
+          "tag": "span",
+          "children": "&lt;" + code + "&gt;",
+        },
+        {
+          "tag": "Inspector",
+          "attributes": {
+            "for": code,
+          }
+        }
+      ]
+    };
+
+    // We update component (save + file)
+    saveComponent (code, renderSave     (emptyComponent));
+    writeComponent(code, renderComponent(emptyComponent));
+
+    // We update list with our "new component"
+    components[code] = emptyComponent;
+  });
+
+
   // We update component (save + file)
   saveComponent (component.name, renderSave     (component));
   writeComponent(component.name, renderComponent(component));
-
-
-  // Get updated list of other components
-  let components = getAllComponents();
 
   // We update list with our "new component"
   components[component.name] = component;
