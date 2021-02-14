@@ -1,0 +1,4 @@
+# Activating git on these files to not lose progress at start
+# *
+_components.js
+!.gitgnore
