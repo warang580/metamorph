@@ -35,7 +35,7 @@ module.exports = {
           "class": "border rounded bg-green-300 m-4 p-2",
           "@click": "update"
         },
-        "children": "Save"
+        "children": "Save!"
       }
     ]
   },
@@ -65,11 +65,20 @@ module.exports = {
       },
       {
         "tag": "div",
-        "attributes": {
-          "class": "text-4xl",
-          "v-for": "[k, v] in Object.entries(emojis)"
-        },
-        "children": "{{ v }} is :{{ k }}:"
+        "children": [
+          {
+            "tag": "div",
+            "children": "available emojis ="
+          },
+          {
+            "tag": "div",
+            "attributes": {
+              "class": "text-4xl",
+              "v-for": "[k, v] in Object.entries(emojis)"
+            },
+            "children": "{{ v }} is :{{ k }}:"
+          }
+        ]
       }
     ]
   },
@@ -122,7 +131,7 @@ module.exports = {
               {
                 "tag": "textarea",
                 "attributes": {
-                  "class": "block w-11/12 p-4 overflow-auto transform rotate-0 rounded shadow resize border m-4 text-sm font-mono bg-blue-900 text-gray-100",
+                  "class": "block w-11/12 p-4 overflow-auto transform rotate-0 rounded shadow resize border m-4 text-sm font-mono bg-pink-900 text-gray-100",
                   "v-model": "component",
                   "v-if": "editable",
                   "style": "min-height: 400px"
@@ -147,12 +156,13 @@ module.exports = {
     "name": "Scene",
     "data": {
       "wave": "https://media1.tenor.com/images/f38bd4f0ae23b4d7d594c388ab4f09ed/tenor.gif",
-      "w": 200
+      "w": 300
     },
     "components": [
       "Inspector",
       "Editor",
-      "Emoji"
+      "Emoji",
+      "Todos"
     ],
     "mounted": "() => {}",
     "methods": {},
@@ -164,6 +174,15 @@ module.exports = {
           "class": "font-bold mb-4"
         },
         "children": "My Scene"
+      },
+      {
+        "tag": "Todos"
+      },
+      {
+        "tag": "Inspector",
+        "attributes": {
+          "for": "Todos"
+        }
       },
       {
         "tag": "Emoji"
@@ -239,5 +258,37 @@ module.exports = {
         }
       }
     ]
+  },
+  "Todos": {
+    "name": "Todos",
+    "components": [
+      "Inspector"
+    ],
+    "template": [
+      {
+        "tag": "div",
+        "children": "&lt;Todos&gt;"
+      },
+      {
+        "tag": "div",
+        "attributes": {
+          "class": "overflow-scroll",
+          "style": "height: 100px; overflow:scroll;"
+        },
+        "children": [
+          {
+            "tag": "div",
+            "children": "{{ i }}: {{ todo.title }} {{ todo.done ? '✅' : '⚠️' }}",
+            "attributes": {
+              "v-for": "(todo, i) in todos"
+            }
+          }
+        ]
+      }
+    ],
+    "data": {
+      "todos": null
+    },
+    "mounted": "() => { fetch('https://jsonplaceholder.typicode.com/todos').then((response) => response.json()).then(todos => this.todos = todos); }"
   }
 };

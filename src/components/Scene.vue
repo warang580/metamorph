@@ -1,5 +1,7 @@
 <template>
 <span class="font-bold mb-4">My Scene</span>
+<Todos  />
+<Inspector for="Todos" />
 <Emoji  />
 <Inspector for="Emoji" />
 <img class="rounded shadow m-4 transform animate-pulse rotate-12" :width="w" :src="wave" />
@@ -14,18 +16,20 @@ const { ipcRenderer } = require('electron');
 import Inspector from './Inspector.vue'
 import Editor from './Editor.vue'
 import Emoji from './Emoji.vue'
+import Todos from './Todos.vue'
 
 export default {
 components: {Inspector: Inspector,
 Editor: Editor,
-Emoji: Emoji,},
+Emoji: Emoji,
+Todos: Todos,},
 
 props: {},
 
 data() {
 return {
 wave: "https://media1.tenor.com/images/f38bd4f0ae23b4d7d594c388ab4f09ed/tenor.gif",
-w: 200
+w: 300
 };
 },
 

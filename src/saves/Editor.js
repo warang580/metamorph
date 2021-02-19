@@ -34,7 +34,7 @@ module.exports = {
         "class": "border rounded bg-green-300 m-4 p-2",
         "@click": "update"
       },
-      "children": "Save"
+      "children": "Save!"
     }
   ]
 };

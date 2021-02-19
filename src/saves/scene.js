@@ -2,12 +2,13 @@ module.exports = {
   "name": "Scene",
   "data": {
     "wave": "https://media1.tenor.com/images/f38bd4f0ae23b4d7d594c388ab4f09ed/tenor.gif",
-    "w": 200
+    "w": 300
   },
   "components": [
     "Inspector",
     "Editor",
-    "Emoji"
+    "Emoji",
+    "Todos"
   ],
   "mounted": "() => {}",
   "methods": {},
@@ -19,6 +20,15 @@ module.exports = {
         "class": "font-bold mb-4"
       },
       "children": "My Scene"
+    },
+    {
+      "tag": "Todos"
+    },
+    {
+      "tag": "Inspector",
+      "attributes": {
+        "for": "Todos"
+      }
     },
     {
       "tag": "Emoji"

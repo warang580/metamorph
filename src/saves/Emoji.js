@@ -24,11 +24,20 @@ module.exports = {
     },
     {
       "tag": "div",
-      "attributes": {
-        "class": "text-4xl",
-        "v-for": "[k, v] in Object.entries(emojis)"
-      },
-      "children": "{{ v }} is :{{ k }}:"
+      "children": [
+        {
+          "tag": "div",
+          "children": "available emojis ="
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "text-4xl",
+            "v-for": "[k, v] in Object.entries(emojis)"
+          },
+          "children": "{{ v }} is :{{ k }}:"
+        }
+      ]
     }
   ]
 };
