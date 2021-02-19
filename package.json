@@ -5,11 +5,11 @@
   "license": "MIT",
   "main": "index.js",
   "scripts": {
+    "start": "yarn generate && electron .",
+    "watch": "vite",
+    "build": "vite build",
     "generate": "babel-node generate.js",
-    "electron": "yarn generate && electron .",
-    "devtools": ".\\node_modules\\.bin\\vue-devtools",
-    "vite": "vite",
-    "build": "vite build"
+    "devtools": ".\\node_modules\\.bin\\vue-devtools"
   },
   "dependencies": {
     "vue": "^3.0.5",
