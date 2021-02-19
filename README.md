@@ -25,7 +25,7 @@ This projects uses :
 
 [Ink & Switch - End User Programming](https://www.inkandswitch.com/end-user-programming.html)
 
-- [Notion](www.notion.so/)
+- [Notion](https://www.notion.so/)
 - [HyperCards](https://www.vipercard.net/0.3/html/video3.html)
 - [ObservableHQ](https://observablehq.com/demo)
 - [Glamorous Toolkit](https://gtoolkit.com)
