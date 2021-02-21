@@ -24,6 +24,9 @@ module.exports = {
     },
     {
       "tag": "div",
+      "attributes": {
+        "v-if": "false"
+      },
       "children": [
         {
           "tag": "div",

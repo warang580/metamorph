@@ -40,7 +40,7 @@ module.exports = {
               "attributes": {
                 "class": "border rounded bg-blue-300 m-4 p-2",
                 "@click": "update",
-                "v-if": "editable"
+                "v-if": "false"
               },
               "children": "Save"
             },
@@ -50,6 +50,7 @@ module.exports = {
                 "class": "block w-11/12 p-4 overflow-auto transform rotate-0 rounded shadow resize border m-4 text-sm font-mono bg-pink-900 text-gray-100",
                 "v-model": "component",
                 "v-if": "editable",
+                "@keyup.ctrl.enter": "update",
                 "style": "min-height: 400px"
               }
             },
@@ -58,7 +59,7 @@ module.exports = {
               "attributes": {
                 "class": "border rounded animate-pulse bg-blue-300 m-4 p-2",
                 "@click": "update",
-                "v-if": "editable"
+                "v-if": "false"
               },
               "children": "Save"
             }

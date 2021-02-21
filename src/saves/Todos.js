@@ -11,15 +11,16 @@ module.exports = {
     {
       "tag": "div",
       "attributes": {
-        "class": "overflow-scroll",
-        "style": "height: 100px;"
+        "class": "overflow-scroll bg-red-100",
+        "style": "height: 200px;"
       },
       "children": [
         {
           "tag": "div",
           "children": "{{ i }}: {{ todo.title }} {{ todo.done ? '✅' : '⚠️' }}",
           "attributes": {
-            "v-for": "(todo, i) in todos"
+            "v-for": "(todo, i) in todos",
+            "class": "mb-4"
           }
         }
       ]
