@@ -2,17 +2,17 @@
 
 Exploring and experimenting what could be an interface for end-user programming
 
-This project is *really* early in development.
+This project is *really* early in development, it's a proof of concept.
+Abstractions and D/UX will come later.
 
 ![Current State Screenshot](./current.png)
+![Current State Animated](./current.gif)
 
-This projects uses :
+This project is an Electron app that uses Vite as an automatic "compiler" every time you make changes to the app itself.
+It is working by emulating the fact that you would be writing .vue components by hand (but you're actually sending events to edit or create the files in the background).
 
-- Electron
-- Vite
-- Vue
-- TailwindCSS
-- XState (soon)
+You can edit components with an "Inspector", which is a component too, so you can edit the inspector.
+It's (meant to be) editable from the ground up.
 
 ## Usage
 
@@ -29,5 +29,5 @@ This projects uses :
 - [HyperCards](https://www.vipercard.net/0.3/html/video3.html)
 - [ObservableHQ](https://observablehq.com/demo)
 - [Glamorous Toolkit](https://gtoolkit.com)
-- [Drawing Dynamic Visualizations - Bret Victor](http://worrydream.com/DrawingDynamicVisualizationsTalkAddendum/)
 - [WithEve](http://witheve.com)
+- [Drawing Dynamic Visualizations - Bret Victor](http://worrydream.com/DrawingDynamicVisualizationsTalkAddendum/)
